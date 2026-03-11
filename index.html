@@ -112,6 +112,7 @@ document.getElementById("video").innerHTML=
 `<iframe src="https://www.tiktok.com/embed/v2/${id}" allowfullscreen></iframe>`;
 
 }
+
 function downloadVideo(){
 
 let url = document.getElementById("link").value.trim();
@@ -122,9 +123,9 @@ return;
 }
 
 /* mở trang download */
-let downloadSite = "https://tikwm.com/?url=" + encodeURIComponent(url);
+let downloadPage = "https://tikwm.com/?url=" + encodeURIComponent(url);
 
-window.open(downloadSite,"_blank");
+window.open(downloadPage,"_blank");
 
 }
 
