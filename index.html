@@ -41,18 +41,13 @@ margin-left:5px;
 
 function showVideo(){
 
-let url=document.getElementById("url").value;
+let url = document.getElementById("link").value;
 
-let videoID=url.split("/video/")[1];
+let id = url.split("/video/")[1].split("?")[0];
 
-document.getElementById("video").innerHTML=
-
-`<iframe 
-src="https://www.tiktok.com/embed/v2/${videoID}" 
-width="350"
-height="600"
-frameborder="0">
-</iframe>`;
+document.getElementById("video").innerHTML =
+`<blockquote class="tiktok-embed" cite="${url}" data-video-id="${id}" style="max-width:605px;"></blockquote>
+<script async src="https://www.tiktok.com/embed.js"><\/script>`;
 
 }
 
