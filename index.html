@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>TikTok Downloader</title>
 
 <style>
@@ -25,12 +26,7 @@ max-width:420px;
 background:#1c1c1c;
 padding:25px;
 border-radius:12px;
-box-shadow:0 0 20px rgba(0,0,0,0.4);
 text-align:center;
-}
-
-h2{
-margin-bottom:20px;
 }
 
 input{
@@ -38,7 +34,6 @@ width:100%;
 padding:14px;
 border:none;
 border-radius:8px;
-font-size:15px;
 margin-bottom:10px;
 }
 
@@ -47,20 +42,13 @@ width:100%;
 padding:14px;
 border:none;
 border-radius:8px;
-font-size:16px;
 margin-top:10px;
 cursor:pointer;
+font-size:16px;
 }
 
-.preview{
-background:#ff0050;
-color:white;
-}
-
-.download{
-background:#00c853;
-color:white;
-}
+.preview{background:#ff0050;color:white;}
+.download{background:#00c853;color:white;}
 
 video{
 width:100%;
@@ -69,6 +57,7 @@ border-radius:10px;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -81,9 +70,11 @@ border-radius:10px;
 
 <button class="preview" onclick="preview()">Preview Video</button>
 
-<button class="download" onclick="download()">Download Video</button>
+<button class="download" onclick="getVideo()">Get Download Link</button>
 
 <div id="player"></div>
+
+<a id="downloadBtn" style="display:none"></a>
 
 </div>
 
@@ -93,9 +84,7 @@ function getID(url){
 
 let match=url.match(/video\/(\d+)/);
 
-if(match) return match[1];
-
-return null;
+return match?match[1]:null;
 
 }
 
@@ -106,25 +95,29 @@ let url=document.getElementById("url").value.trim();
 let id=getID(url);
 
 if(!id){
-alert("Link TikTok không hợp lệ");
-return;
-}
 
-let embed=`https://www.tiktok.com/embed/v2/${id}`;
+alert("Link TikTok không hợp lệ");
+
+return;
+
+}
 
 document.getElementById("player").innerHTML=
 
-`<iframe src="${embed}" width="100%" height="500" frameborder="0"></iframe>`;
+`<iframe src="https://www.tiktok.com/embed/v2/${id}" width="100%" height="500"></iframe>`;
 
 }
 
-async function download(){
+async function getVideo(){
 
 let url=document.getElementById("url").value.trim();
 
 if(!url){
+
 alert("Dán link TikTok trước");
+
 return;
+
 }
 
 let api="https://www.tikwm.com/api/?url="+encodeURIComponent(url);
@@ -133,19 +126,21 @@ let res=await fetch(api);
 
 let data=await res.json();
 
-if(data.data.play){
+if(data.data && data.data.play){
 
-let link=data.data.play;
+let video=data.data.play;
 
-let a=document.createElement("a");
+let btn=document.getElementById("downloadBtn");
 
-a.href=link;
+btn.href=video;
 
-a.download="tiktok-video.mp4";
+btn.innerText="Download Video";
 
-document.body.appendChild(a);
+btn.style.display="block";
 
-a.click();
+btn.className="download";
+
+btn.setAttribute("download","tiktok-video.mp4");
 
 }
 
@@ -156,7 +151,6 @@ alert("Không lấy được video");
 }
 
 }
-
 
 </script>
 
