@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<h2>Tải Video Tiktok Free by Thanh An</h2>
+<h2>TikTok Video Viewer</h2>
 
 <input id="link" placeholder="Paste TikTok link">
 
@@ -11,7 +11,6 @@
 <button onclick="downloadVideo()">Download Video</button>
 
 <div id="video"></div>
-
 <div id="download"></div>
   
 <style>
@@ -39,6 +38,8 @@ margin-left:5px;
 
 <script>
 
+
+
 function showVideo(){
 
 let url = document.getElementById("link").value.trim();
@@ -48,28 +49,27 @@ alert("Vui lòng dán link TikTok");
 return;
 }
 
-if(url.includes("vt.tiktok.com") || url.includes("vm.tiktok.com")){
-document.getElementById("video").innerHTML =
-`<iframe src="${url}" width="325" height="580" frameborder="0" allowfullscreen></iframe>`;
+/* lấy ID video */
+let match = url.match(/video\/(\d+)/);
+
+if(!match){
+alert("Link TikTok không hợp lệ");
 return;
 }
 
-if(url.includes("/video/")){
-
-let id = url.split("/video/")[1].split("?")[0];
+let id = match[1];
 
 document.getElementById("video").innerHTML =
-`<iframe src="https://www.tiktok.com/embed/v2/${id}"
+`<iframe
+src="https://www.tiktok.com/embed/v2/${id}"
 width="325"
 height="580"
 frameborder="0"
-allowfullscreen></iframe>`;
-
-}else{
-alert("Link TikTok không hợp lệ");
-}
+allowfullscreen>
+</iframe>`;
 
 }
+
 
 async function downloadVideo(){
 
@@ -78,27 +78,12 @@ let url = document.getElementById("link").value;
 let api = "https://tikwm.com/api/?url=" + encodeURIComponent(url);
 
 let res = await fetch(api);
+
 let data = await res.json();
 
 let video = data.data.play;
 
 window.open(video,"_blank");
-
-}
-
-let id = url.split("/video/")[1].split("?")[0];
-
-let videoUrl = "https://www.tikwm.com/video/media/hdplay/" + id + ".mp4";
-
-/* tạo link download */
-let a = document.createElement("a");
-a.href = videoUrl;
-a.target = "_blank";
-a.rel = "noopener";
-
-document.body.appendChild(a);
-a.click();
-document.body.removeChild(a);
 
 }
 
