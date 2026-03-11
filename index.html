@@ -2,65 +2,83 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<h2>TikTok Video Viewer</h2>
+<title>TikTok Downloader</title>
+
+<style>
+
+body{
+font-family:Arial;
+text-align:center;
+background:#f4f4f4;
+padding:40px;
+}
+
+input{
+width:300px;
+padding:10px;
+font-size:16px;
+}
+
+button{
+padding:10px 15px;
+font-size:16px;
+margin:5px;
+cursor:pointer;
+}
+
+#video{
+margin-top:20px;
+}
+
+#download{
+margin-top:20px;
+font-size:18px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>TikTok Video Viewer & Downloader</h2>
 
 <input id="link" placeholder="Paste TikTok link">
+
+<br><br>
 
 <button onclick="showVideo()">Show Video</button>
 
 <button onclick="downloadVideo()">Download Video</button>
 
 <div id="video"></div>
+
 <div id="download"></div>
-  
-<style>
-body{
-font-family:Arial;
-text-align:center;
-margin-top:40px;
-}
-
-input{
-width:400px;
-padding:10px;
-}
-
-button{
-padding:10px 20px;
-cursor:pointer;
-margin-left:5px;
-}
-</style>
-
-</head>
-
-<body>
 
 <script>
 
-
+/* show video */
 
 function showVideo(){
 
-let url = document.getElementById("link").value.trim();
+let url=document.getElementById("link").value.trim();
 
 if(!url){
 alert("Vui lòng dán link TikTok");
 return;
 }
 
-/* lấy ID video */
-let match = url.match(/video\/(\d+)/);
+let match=url.match(/video\/(\d+)/);
 
 if(!match){
 alert("Link TikTok không hợp lệ");
 return;
 }
 
-let id = match[1];
+let id=match[1];
 
-document.getElementById("video").innerHTML =
-`<iframe
+document.getElementById("video").innerHTML=
+
+`<iframe 
 src="https://www.tiktok.com/embed/v2/${id}"
 width="325"
 height="580"
@@ -70,27 +88,35 @@ allowfullscreen>
 
 }
 
+/* download video */
 
 async function downloadVideo(){
 
-let url = document.getElementById("link").value;
+let url=document.getElementById("link").value;
 
-let api = "https://tikwm.com/api/?url=" + encodeURIComponent(url);
+let api="https://tikwm.com/api/?url="+encodeURIComponent(url);
 
-let res = await fetch(api);
+try{
 
-let data = await res.json();
+let res=await fetch(api);
 
-let video = data.data.play;
+let data=await res.json();
 
-window.open(video,"_blank");
+let video=data.data.play;
+
+document.getElementById("download").innerHTML=
+
+`<a href="${video}" target="_blank">⬇ Download Video</a>`;
+
+}catch(e){
+
+alert("Không lấy được video");
 
 }
 
-
+}
 
 </script>
-<script async src="https://www.tiktok.com/embed.js"></script>
 
 </body>
 </html>
