@@ -41,28 +41,49 @@ margin-left:5px;
 
 function showVideo(){
 
-let url = document.getElementById("link").value;
+let url = document.getElementById("link").value.trim();
+
+if(!url){
+alert("Vui lòng dán link TikTok");
+return;
+}
+
+if(url.includes("vt.tiktok.com") || url.includes("vm.tiktok.com")){
+document.getElementById("video").innerHTML =
+`<iframe src="${url}" width="325" height="580" frameborder="0" allowfullscreen></iframe>`;
+return;
+}
+
+if(url.includes("/video/")){
 
 let id = url.split("/video/")[1].split("?")[0];
 
 document.getElementById("video").innerHTML =
-`<iframe 
-src="https://www.tiktok.com/embed/v2/${id}" 
-width="325" 
-height="580" 
-frameborder="0" 
-allowfullscreen>
-</iframe>`;
+`<iframe src="https://www.tiktok.com/embed/v2/${id}"
+width="325"
+height="580"
+frameborder="0"
+allowfullscreen></iframe>`;
+
+}else{
+alert("Link TikTok không hợp lệ");
+}
 
 }
 
-function downloadVideo(){
+async function downloadVideo(){
 
 let url = document.getElementById("link").value;
 
-if(!url.includes("/video/")){
-alert("Link TikTok không hợp lệ");
-return;
+let api = "https://tikwm.com/api/?url=" + encodeURIComponent(url);
+
+let res = await fetch(api);
+let data = await res.json();
+
+let video = data.data.play;
+
+window.open(video,"_blank");
+
 }
 
 let id = url.split("/video/")[1].split("?")[0];
