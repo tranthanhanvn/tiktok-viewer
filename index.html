@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>TikTok Viewer</title>
+<input id="link" placeholder="Paste TikTok link">
+<button onclick="showVideo()">Show Video</button>
+<button onclick="downloadVideo()">Download</button>
 
+<div id="video"></div>
+<div id="download"></div>
+  
 <style>
 body{
 font-family:Arial;
@@ -50,6 +56,21 @@ width="350"
 height="600"
 frameborder="0">
 </iframe>`;
+
+}
+
+async function downloadVideo(){
+
+let url = document.getElementById("link").value;
+
+let api = "PASTE_API_LINK_HERE?url=" + encodeURIComponent(url);
+
+let res = await fetch(api);
+
+let data = await res.json();
+
+document.getElementById("download").innerHTML =
+`<a href="${data.video}" target="_blank">Download Video</a>`;
 
 }
 
