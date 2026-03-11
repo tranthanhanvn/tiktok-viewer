@@ -56,20 +56,28 @@ allowfullscreen>
 
 }
 
-async function downloadVideo(){
+function downloadVideo(){
 
 let url = document.getElementById("link").value;
 
-let api = "https://tikwm.com/api/?url=" + encodeURIComponent(url);
+if(!url.includes("/video/")){
+alert("Link TikTok không hợp lệ");
+return;
+}
 
-let res = await fetch(api);
+let id = url.split("/video/")[1].split("?")[0];
 
-let data = await res.json();
+let videoUrl = "https://www.tikwm.com/video/media/hdplay/" + id + ".mp4";
 
-let video = data.data.play;
+/* tạo link download */
+let a = document.createElement("a");
+a.href = videoUrl;
+a.target = "_blank";
+a.rel = "noopener";
 
-document.getElementById("download").innerHTML =
-`<br><a href="${video}" target="_blank">⬇ Download Video</a>`;
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
 
 }
 
