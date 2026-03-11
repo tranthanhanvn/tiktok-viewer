@@ -112,31 +112,23 @@ document.getElementById("video").innerHTML=
 `<iframe src="https://www.tiktok.com/embed/v2/${id}" allowfullscreen></iframe>`;
 
 }
+function downloadVideo(){
 
-async function downloadVideo(){
+let url = document.getElementById("link").value.trim();
 
-let url=document.getElementById("link").value;
+if(!url){
+alert("Vui lòng dán link TikTok");
+return;
+}
 
-let api="https://tikwm.com/api/?url="+encodeURIComponent(url);
+/* mở trang download */
+let downloadSite = "https://tikwm.com/?url=" + encodeURIComponent(url);
 
-try{
-
-let res=await fetch(api);
-
-let data=await res.json();
-
-let video=data.data.play;
-
-document.getElementById("download").innerHTML=
-`<a class="download" href="${video}" target="_blank">⬇ Download Video</a>`;
-
-}catch(e){
-
-alert("Không lấy được video");
+window.open(downloadSite,"_blank");
 
 }
 
-}
+
 
 </script>
 
